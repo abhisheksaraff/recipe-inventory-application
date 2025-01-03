@@ -1,1 +1,1 @@
-# inventory-application
+# recipe-inventory-application
