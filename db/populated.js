@@ -1,5 +1,4 @@
-const { Client } = require("pg");
-require("dotenv").config();
+const client = require("./client");
 
 const createTablesSQL = `
 CREATE TABLE IF NOT EXISTS cuisine (
@@ -16,15 +15,15 @@ CREATE TABLE IF NOT EXISTS recipe (
 id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 name VARCHAR (255),
 cuisine_id INTEGER,
-FOREIGN KEY (cuisine_id) REFERENCES cuisine(id)
+FOREIGN KEY (cuisine_id) REFERENCES cuisines(id)
 );
 
 CREATE TABLE IF NOT EXISTS recipe_ingredients (
 recipe_id INTEGER,
 ingredient_id INTEGER,
 PRIMARY KEY (recipe_id, ingredient_id),
-FOREIGN KEY (recipe_id) REFERENCES recipe(id),
-FOREIGN KEY (ingredient_id) REFERENCES ingredient(id)
+FOREIGN KEY (recipe_id) REFERENCES recipes(id),
+FOREIGN KEY (ingredient_id) REFERENCES ingredients(id)
 );
 `;
 
@@ -196,9 +195,6 @@ INSERT INTO recipe_ingredients (recipe_id, ingredient_id) VALUES
 
 async function main() {
   console.log("seeding");
-  const client = new Client({
-    connectionString: `postgresql://<role_name>:<role_password>@localhost:5432/${process.env.DB_NAME}`,
-  });
 
   await client.connect();
   await client.query(createTablesSQL);
@@ -207,3 +203,5 @@ async function main() {
 
   console.log("done");
 }
+
+main();
