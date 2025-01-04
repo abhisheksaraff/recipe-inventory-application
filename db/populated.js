@@ -1,17 +1,17 @@
 const client = require("./client");
 
 const createTablesSQL = `
-CREATE TABLE IF NOT EXISTS cuisine (
+CREATE TABLE IF NOT EXISTS cuisines (
 id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 name VARCHAR (255)
 );
 
-CREATE TABLE IF NOT EXISTS ingredient (
+CREATE TABLE IF NOT EXISTS ingredients (
 id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 name VARCHAR (255)
 );
 
-CREATE TABLE IF NOT EXISTS recipe (
+CREATE TABLE IF NOT EXISTS recipes (
 id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 name VARCHAR (255),
 cuisine_id INTEGER,
@@ -29,7 +29,7 @@ FOREIGN KEY (ingredient_id) REFERENCES ingredients(id)
 
 const insertValuesSQL = `
 -- Insert data into cuisines table
-INSERT INTO cuisines (cuisine_name) VALUES
+INSERT INTO cuisines (name) VALUES
 ('Italian'),
 ('Mexican'),
 ('Indian'),
@@ -42,7 +42,7 @@ INSERT INTO cuisines (cuisine_name) VALUES
 ('Spanish');
 
 -- Insert data into ingredients table
-INSERT INTO ingredients (ingredient_name) VALUES
+INSERT INTO ingredients (name) VALUES
 ('Tomato Sauce'),
 ('Spaghetti'),
 ('Taco Shells'),
@@ -65,7 +65,7 @@ INSERT INTO ingredients (ingredient_name) VALUES
 ('Cucumber');
 
 -- Insert data into recipes table
-INSERT INTO recipes (recipe_name, cuisine_id) VALUES
+INSERT INTO recipes (name, cuisine_id) VALUES
 ('Spaghetti Bolognese', 1),
 ('Margherita Pizza', 1),
 ('Tacos', 2),
