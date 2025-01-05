@@ -1,12 +1,20 @@
 const queries = require("../db/queries");
 
-async function getRecipeByID(recipeID) {
-  const recipe = await queries.getRecipeByID(recipeID);
+async function getRecipe(recipeID) {
+  const recipe = await queries.getRecipe(recipeID);
   return recipe;
+}
+
+async function addRecipe(recipe) {
+  await queries.addRecipe(recipe);
 }
 
 async function updateRecipe(recipe) {
   await queries.updateRecipe(recipe);
+}
+
+async function deleteRecipe(recipeID) {
+  await queries.deleteRecipe(recipeID);
 }
 
 function cleanUpInputRecipeData(recipeID, name, cuisine, ingredients) {
@@ -14,9 +22,9 @@ function cleanUpInputRecipeData(recipeID, name, cuisine, ingredients) {
     id: recipeID,
     name: name,
     cuisine: cuisine,
-    ingredients: ingredients.split(','),
+    ingredients: ingredients.split(","),
   };
   return newRecipe;
 }
 
-module.exports = { getRecipeByID, updateRecipe, cleanUpInputRecipeData };
+module.exports = { getRecipe, addRecipe, updateRecipe, deleteRecipe, cleanUpInputRecipeData };

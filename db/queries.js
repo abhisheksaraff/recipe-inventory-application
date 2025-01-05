@@ -13,7 +13,7 @@ async function getAllRecipes() {
   return rows;
 }
 
-async function getRecipeByID(recipeID) {
+async function getRecipe(recipeID) {
   const recipeResult = await pool.query(`
     SELECT
     recipes.id AS id, 
@@ -49,10 +49,26 @@ async function getRecipeByID(recipeID) {
   return recipe;
 }
 
+async function addRecipe(recipe) {
+  await pool.query(`
+    INSERT INTO recipes (name, cuisine_id) VALUES
+    '${recipe.name}', ${await getCuisineID(recipe.cuisine)};
+  `);
+
+  recipe.ingredients.forEach(async (ingredient) => {
+    await pool.query(`
+      INSERT INTO recipe_ingredients (recipe_id, ingredient_id)
+      VALUES (${recipe.id}, ${await getIngredientID(ingredient)})
+    `);
+  });
+}
+
 async function updateRecipe(recipe) {
   await pool.query(`
     UPDATE recipes
-    SET name = '${recipe.name}', cuisine_id = ${await getCuisineID(recipe.cuisine)}
+    SET name = '${recipe.name}', cuisine_id = ${await getCuisineID(
+    recipe.cuisine
+  )}
     WHERE id = ${recipe.id};
   `);
 
@@ -123,8 +139,35 @@ async function getCuisineID(cuisine) {
   }
 }
 
+async function deleteRecipe(recipeID) {
+  // recipe when deleted remove rows from recipe ->  will automatically take care of recipe_ingredients
+  await pool.query(`
+    DELETE 
+    FROM recipes
+    WHERE id = ${recipeID};
+  `);
+}
+
+async function cleanUpOrphanCuisines() {
+  await pool.query(`
+    DELETE 
+    FROM cuisines 
+    WHERE id NOT IN (SELECT recipes.cuisine_id AS id FROM recipes);
+  `);
+}
+
+async function cleanUpOrphanIngredients() {
+  await pool.query(`
+    DELETE
+    FROM ingredients 
+    WHERE id NOT IN (SELECT recipe_ingredients.ingredient_id  FROM recipe_ingredients);
+  `);
+}
+
 module.exports = {
   getAllRecipes,
-  getRecipeByID,
+  getRecipe,
+  addRecipe,
   updateRecipe,
+  deleteRecipe,
 };

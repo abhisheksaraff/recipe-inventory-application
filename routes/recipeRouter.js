@@ -3,15 +3,19 @@ const recipeRouter = Router();
 
 const recipeController = require("../controllers/recipeController");
 
+recipeRouter.get("/new", async(req, res) => {
+  //res.render("viewRecipe", { title: "New Recipe"});
+});
+
 recipeRouter.get("/:recipeID", async (req, res) => {
-  const recipe = await recipeController.getRecipeByID(
+  const recipe = await recipeController.getRecipe(
     Number(req.params.recipeID)
   );
   res.render("viewRecipe", { title: recipe.name, recipe: recipe });
 });
 
 recipeRouter.get("/:recipeID/edit", async (req, res) => {
-  const recipe = await recipeController.getRecipeByID(req.params.recipeID);
+  const recipe = await recipeController.getRecipe(req.params.recipeID);
   res.render("editRecipe", {
     title: recipe.name,
     action: `/recipe/${recipe.id}/edit`,
@@ -31,8 +35,9 @@ recipeRouter.post("/:recipeID/edit", async (req, res) => {
   res.redirect("/");
 });
 
-recipeRouter.post("/:recipeID/delete", async (req, res) => {
-  res.send("Delete Recipe");
+recipeRouter.get("/:recipeID/delete", async (req, res) => {
+  recipeController.deleteRecipe(req.params.recipeID);
+  res.redirect("/");
 });
 
 module.exports = recipeRouter;

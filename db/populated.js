@@ -15,15 +15,15 @@ CREATE TABLE IF NOT EXISTS recipes (
 id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 name VARCHAR (255),
 cuisine_id INTEGER,
-FOREIGN KEY (cuisine_id) REFERENCES cuisines(id)
+FOREIGN KEY (cuisine_id) REFERENCES cuisines(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS recipe_ingredients (
 recipe_id INTEGER,
 ingredient_id INTEGER,
 PRIMARY KEY (recipe_id, ingredient_id),
-FOREIGN KEY (recipe_id) REFERENCES recipes(id),
-FOREIGN KEY (ingredient_id) REFERENCES ingredients(id)
+FOREIGN KEY (recipe_id) REFERENCES recipes(id) ON DELETE CASCADE,
+FOREIGN KEY (ingredient_id) REFERENCES ingredients(id) ON DELETE CASCADE
 );
 `;
 
