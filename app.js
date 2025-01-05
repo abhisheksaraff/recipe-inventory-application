@@ -17,6 +17,9 @@ app.set("view engine", "ejs");
 const assetsPath = path.join(__dirname, "public");
 app.use(express.static(assetsPath));
 
+// Middleware to parse URL-encoded data from HTML form submit
+app.use(express.urlencoded({ extended: true }));
+
 app.use("/", indexRouter);
 app.use("/recipe", recipeRouter);
 

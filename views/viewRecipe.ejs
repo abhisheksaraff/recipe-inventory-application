@@ -3,9 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles.css" />
     <title><%= title %></title>
   </head>
   <body>
-    View Recipe
+    <%- include('navbar') %>
+    <br><br>
+
+   <div><%= recipe.name %></div>
+
+   <br>
+   Cuisine:
+   <div><%= recipe.cuisine %></div>
+   <div>
+    <br>
+    Ingredients :
+    <% recipe.ingredients.map(ingredient => { %>
+      <div> <%= ingredient %> </div>
+    <% }); %>
+   </div>
+
+   <br>
+   <a href= <%= recipe.id+"/edit" %>> Edit </a>
+   <a> Delete </a>
   </body>
 </html>

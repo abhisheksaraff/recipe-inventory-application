@@ -3,9 +3,31 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles.css" />
     <title><%= title %></title>
   </head>
   <body>
-    Edit Recipe
+    <%- include('navbar') %>
+    <br><br>
+
+    <form method="POST" action= <%= action %> >
+      <label>
+        Recipe Name
+        <input name="name" type="text" value= <%= recipe.name %> />
+      </label>
+      <br />
+      <label>
+        Cuisine
+        <input name="cuisine" type="text" value= <%= recipe.cuisine %> />
+      </label>
+      <br />
+      <label>
+        Ingredients
+        <input name="ingredients" type="text" value= "<%= recipe.ingredients.join(',') %>" %> />
+      </label>
+      <br />
+      <input type="submit" value="Submit" />
+      <a href= <%= `/recipe/${recipe.id}` %> ><input type="button" value="Back" /></a>
+    </form>
   </body>
 </html>

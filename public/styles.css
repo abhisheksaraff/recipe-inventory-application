@@ -1,0 +1,21 @@
+* {
+  background-color: black;
+  color: white;
+}
+
+/* Index */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Edit Recipe */
+input {
+  border: 1px solid grey;
+  padding: 8px;
+  border-radius: 4px;
+}
