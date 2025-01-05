@@ -50,15 +50,17 @@ async function getRecipe(recipeID) {
 }
 
 async function addRecipe(recipe) {
+  console.log(`INSERT INTO recipes (name, cuisine_id) VALUES ('${recipe.name}', ${await getCuisineID(recipe.cuisine)};)`);
+
   await pool.query(`
-    INSERT INTO recipes (name, cuisine_id) VALUES
-    '${recipe.name}', ${await getCuisineID(recipe.cuisine)};
+   INSERT INTO recipes (name, cuisine_id) 
+   VALUES ('${recipe.name}', ${await getCuisineID(recipe.cuisine)});
   `);
 
   recipe.ingredients.forEach(async (ingredient) => {
     await pool.query(`
       INSERT INTO recipe_ingredients (recipe_id, ingredient_id)
-      VALUES (${recipe.id}, ${await getIngredientID(ingredient)})
+      VALUES (${await getRecipeID(recipe)}, ${await getIngredientID(ingredient)})
     `);
   });
 }
@@ -83,6 +85,16 @@ async function updateRecipe(recipe) {
       VALUES (${recipe.id}, ${await getIngredientID(ingredient)})
     `);
   });
+}
+
+async function getRecipeID(recipe) {
+  const { rows } = await pool.query(`
+    SELECT id
+    FROM recipes
+    WHERE name = '${recipe.name}';
+  `);
+
+  return rows[0].id;
 }
 
 async function getIngredientID(ingredient) {

@@ -13,17 +13,17 @@
     <form method="POST" action= <%= action %> >
       <label>
         Recipe Name
-        <input name="name" type="text" value= <%= recipe.name %> />
+        <input name="name" type="text" value= "<%= recipe.name %>"" />
       </label>
       <br />
       <label>
         Cuisine
-        <input name="cuisine" type="text" value= <%= recipe.cuisine %> />
+        <input name="cuisine" type="text" value= "<%= recipe.cuisine %>" />
       </label>
       <br />
       <label>
         Ingredients
-        <input name="ingredients" type="text" value= "<%= recipe.ingredients.join(',') %>" %> />
+        <input name="ingredients" type="text" value= "<%= recipe.ingredients.join(',') %>" />
       </label>
       <br />
       <input type="submit" value="Submit" />

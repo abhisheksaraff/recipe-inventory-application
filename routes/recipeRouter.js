@@ -3,14 +3,23 @@ const recipeRouter = Router();
 
 const recipeController = require("../controllers/recipeController");
 
-recipeRouter.get("/new", async(req, res) => {
-  //res.render("viewRecipe", { title: "New Recipe"});
+recipeRouter.get("/new", async (req, res) => {
+  res.render("editRecipe", { title: "New Recipe", action: "/recipe/new", recipe: {name: '', cuisine: '', ingredients: []}});
+});
+
+recipeRouter.post("/new", async (req, res) => {
+  const newRecipe = recipeController.cleanUpInputRecipeData(
+    req.params.recipeID,
+    req.body.name,
+    req.body.cuisine,
+    req.body.ingredients
+  );
+  await recipeController.addRecipe(newRecipe);
+  res.redirect("/");
 });
 
 recipeRouter.get("/:recipeID", async (req, res) => {
-  const recipe = await recipeController.getRecipe(
-    Number(req.params.recipeID)
-  );
+  const recipe = await recipeController.getRecipe(Number(req.params.recipeID));
   res.render("viewRecipe", { title: recipe.name, recipe: recipe });
 });
 
