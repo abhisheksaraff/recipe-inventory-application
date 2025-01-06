@@ -19,7 +19,7 @@
       <br />
       <label>
         <div class=" label-text">Cuisine:</div>
-  <input class="cuisine" name=" cuisine" type="text" value="<%= recipe.cuisine %>" />
+  <input class="cuisine" name="cuisine" type="text" value="<%= recipe.cuisine %>" />
   </label>
   <br />
   <label>
@@ -27,7 +27,7 @@
     <input class="ingredients" name="ingredients" type="text" value="<%= recipe.ingredients.join(',') %>" />
   </label>
   <br />
-  <input type="submit" value="Update" />
+  <input type="submit" value="Submit" />
   <a href=<%= `/recipe/${recipe.id}` %>><input type="button" value="Back" /></a>
   </form>
   </div>
