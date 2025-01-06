@@ -1,27 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!--  The public folder acts as the base directory for all static files.
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!--  The public folder acts as the base directory for all static files.
           Any file inside public can be accessed directly by its relative path from the base URL. For example:
           public/styles.css can be accessed as /styles.css.
           public/images/logo.png can be accessed as /images/logo.png. 
           -->
-    <link rel="stylesheet" href="/styles.css" />
-    <title><%= title %></title>
-  </head>
-  <body>
-    <%- include('navbar') %>
-    <br><br>
+  <link rel="stylesheet" href="/styles.css" />
+  <title><%= title %></title>
+</head>
 
-    <div className="card-body">
-      <% allRecipes.forEach(recipe => {%> 
-        <a className="card" href= <%= "recipe/"+recipe.id %>>
-          <div><%= recipe.cuisine %></div>
-          <div><%= recipe.name %></div>
-        </a>
-      <% }); %>
-    </div>
-  </body>
+<body>
+  <%- include('navbar') %>
+
+  <div class="card-body">
+    <% allRecipes.forEach(recipe => {%>
+    <a class="card" href=<%= "recipe/"+recipe.id %>>
+      <div class="cusine"><%= recipe.cuisine %></div>
+      <div class="name"><%= recipe.name %></div>
+    </a>
+    <% }); %>
+  </div>
+</body>
+
 </html>

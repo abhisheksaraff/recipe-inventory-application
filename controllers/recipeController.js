@@ -6,7 +6,6 @@ async function getRecipe(recipeID) {
 }
 
 async function addRecipe(recipe) {
-  //console.log(recipe);
   await queries.addRecipe(recipe);
 }
 

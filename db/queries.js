@@ -50,8 +50,6 @@ async function getRecipe(recipeID) {
 }
 
 async function addRecipe(recipe) {
-  console.log(`INSERT INTO recipes (name, cuisine_id) VALUES ('${recipe.name}', ${await getCuisineID(recipe.cuisine)};)`);
-
   await pool.query(`
    INSERT INTO recipes (name, cuisine_id) 
    VALUES ('${recipe.name}', ${await getCuisineID(recipe.cuisine)});
@@ -146,7 +144,6 @@ async function getCuisineID(cuisine) {
       FROM cuisines
       WHERE name = '${cuisine}';
     `);
-
     return rows[0].id;
   }
 }

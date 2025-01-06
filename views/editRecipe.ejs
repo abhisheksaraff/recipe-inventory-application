@@ -1,33 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/styles.css" />
-    <title><%= title %></title>
-  </head>
-  <body>
-    <%- include('navbar') %>
-    <br><br>
 
-    <form method="POST" action= <%= action %> >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/styles.css" />
+  <title><%= title %></title>
+</head>
+
+<body>
+  <%- include('navbar') %>
+  <div class="edit-recipe">
+    <form method="POST" action=<%= action %>>
       <label>
-        Recipe Name
-        <input name="name" type="text" value= "<%= recipe.name %>"" />
+        <div class="label-text">Recipe Name:</div>
+        <input class="name" name="name" type="text" value="<%= recipe.name %>"" />
       </label>
       <br />
       <label>
-        Cuisine
-        <input name="cuisine" type="text" value= "<%= recipe.cuisine %>" />
-      </label>
-      <br />
-      <label>
-        Ingredients
-        <input name="ingredients" type="text" value= "<%= recipe.ingredients.join(',') %>" />
-      </label>
-      <br />
-      <input type="submit" value="Submit" />
-      <a href= <%= `/recipe/${recipe.id}` %> ><input type="button" value="Back" /></a>
-    </form>
-  </body>
+        <div class=" label-text">Cuisine:</div>
+  <input class="cuisine" name=" cuisine" type="text" value="<%= recipe.cuisine %>" />
+  </label>
+  <br />
+  <label>
+    <div class="label-text">Ingredients:</div>
+    <input class="ingredients" name="ingredients" type="text" value="<%= recipe.ingredients.join(',') %>" />
+  </label>
+  <br />
+  <input type="submit" value="Update" />
+  <a href=<%= `/recipe/${recipe.id}` %>><input type="button" value="Back" /></a>
+  </form>
+  </div>
+</body>
+
 </html>
