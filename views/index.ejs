@@ -19,7 +19,7 @@
   <div class="card-body">
     <% allRecipes.forEach(recipe => {%>
     <a class="card" href=<%= "recipe/"+recipe.id %>>
-      <div class="cusine"><%= recipe.cuisine %></div>
+      <div class="cuisine"><%= recipe.cuisine %></div>
       <div class="name"><%= recipe.name %></div>
     </a>
     <% }); %>

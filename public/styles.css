@@ -19,18 +19,28 @@ a:hover {
 
 /* Navbar */
 .navbar {
-  display: flex;
-  flex-direction: column;
   border-right: 2px solid white;
   padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
-  .logo {
-    font-size: x-large;
+  .top {
+    display: flex;
+    flex-direction: column;
+
+    .logo {
+      font-size: x-large;
+    }
+
+    .home,
+    .add-recipe {
+      margin-top: 7px;
+    }
   }
 
-  .home,
-  .add-recipe {
-    margin-top: 5px;
+  .bottom {
+    text-align: center;
   }
 }
 
@@ -43,6 +53,7 @@ a:hover {
 
   .card {
     background-color: #222429;
+    height: 250px;
     margin: 3px;
     border: 1px solid rgb(75, 82, 92);
     border-radius: 10px;
@@ -52,6 +63,14 @@ a:hover {
 
     * {
       background-color: #222429;
+    }
+
+    .cuisine {
+      color: lightgray;
+    }
+
+    .name {
+      font-size: larger;
     }
   }
 
@@ -89,22 +108,24 @@ a:hover {
     align-self: center;
   }
 
-  .name, .cuisine, .ingredients {
+  .name,
+  .cuisine,
+  .ingredients {
     width: 40%;
     border: 1px solid grey;
     padding: 8px;
     border-radius: 4px;
   }
 
-  .update, .delete {
-    border: 1px solid grey;
+  input {
+    border: 1px solid white;
     padding: 8px;
     border-radius: 4px;
+    color: grey;
+    cursor: pointer;
   }
 
-  input {
-    border: 1px solid grey;
-    padding: 8px;
-    border-radius: 4px;
+  input:hover {
+    color: white;
   }
 }
