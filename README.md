@@ -1,4 +1,4 @@
-# recipe-inventory-application
+# Recipe Management App
 
 Welcome to the Recipe Management App! This project is designed to showcase a full-stack web application using Express and PostgreSQL. It demonstrates relational database design, CRUD operations, and intuitive user interfaces. Perfect for culinary enthusiasts and a solid demonstration of web development skills for recruiters.
 
