@@ -1,5 +1,4 @@
 const queries = require("../db/queries");
-const { body, validationResult } = require("express-validator");
 
 getRecipe = async (req, res) => {
   const recipe = await queries.getRecipe(Number(req.params.recipeID));
