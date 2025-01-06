@@ -1,21 +1,55 @@
 const queries = require("../db/queries");
+const { body, validationResult } = require("express-validator");
 
-async function getRecipe(recipeID) {
-  const recipe = await queries.getRecipe(recipeID);
-  return recipe;
-}
+getRecipe = async (req, res) => {
+  const recipe = await queries.getRecipe(Number(req.params.recipeID));
+  res.render("viewRecipe", { title: recipe.name, recipe: recipe });
+};
 
-async function addRecipe(recipe) {
-  await queries.addRecipe(recipe);
-}
+getNewRecipe = async (req, res) => {
+  res.render("editRecipe", {
+    title: "New Recipe",
+    action: "/recipe/new",
+    recipe: { name: "", cuisine: "", ingredients: [] },
+  });
+};
 
-async function updateRecipe(recipe) {
-  await queries.updateRecipe(recipe);
-}
+postNewRecipe = async (req, res) => {
+  const newRecipe = cleanUpInputRecipeData(
+    req.params.recipeID,
+    req.body.name,
+    req.body.cuisine,
+    req.body.ingredients
+  );
 
-async function deleteRecipe(recipeID) {
-  await queries.deleteRecipe(recipeID);
-}
+  await queries.addRecipe(newRecipe);
+  res.redirect("/");
+};
+
+getEditRecipe = async (req, res) => {
+  const recipe = await queries.getRecipe(req.params.recipeID);
+  res.render("editRecipe", {
+    title: recipe.name,
+    action: `/recipe/${recipe.id}/edit`,
+    recipe: recipe,
+  });
+};
+
+postEditRecipe = async (req, res) => {
+  const newRecipe = cleanUpInputRecipeData(
+    req.params.recipeID,
+    req.body.name,
+    req.body.cuisine,
+    req.body.ingredients
+  );
+  await queries.updateRecipe(newRecipe);
+  res.redirect("/");
+};
+
+postDeleteRecipe = async (req, res) => {
+  await queries.deleteRecipe(req.params.recipeID);
+  res.redirect("/");
+};
 
 function cleanUpInputRecipeData(recipeID, name, cuisine, ingredients) {
   const newRecipe = {
@@ -27,4 +61,11 @@ function cleanUpInputRecipeData(recipeID, name, cuisine, ingredients) {
   return newRecipe;
 }
 
-module.exports = { getRecipe, addRecipe, updateRecipe, deleteRecipe, cleanUpInputRecipeData };
+module.exports = {
+  getRecipe,
+  getNewRecipe,
+  postNewRecipe,
+  getEditRecipe,
+  postEditRecipe,
+  postDeleteRecipe,
+};

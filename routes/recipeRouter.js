@@ -3,50 +3,13 @@ const recipeRouter = Router();
 
 const recipeController = require("../controllers/recipeController");
 
-recipeRouter.get("/new", async (req, res) => {
-  res.render("editRecipe", { title: "New Recipe", action: "/recipe/new", recipe: {name: '', cuisine: '', ingredients: []}});
-});
+recipeRouter.get("/new", recipeController.getNewRecipe);
+recipeRouter.post("/new", recipeController.postNewRecipe);
 
-recipeRouter.post("/new", async (req, res) => {
-  const newRecipe = recipeController.cleanUpInputRecipeData(
-    req.params.recipeID,
-    req.body.name,
-    req.body.cuisine,
-    req.body.ingredients
-  );
-  await recipeController.addRecipe(newRecipe);
-  res.redirect("/");
-});
+recipeRouter.get("/:recipeID", recipeController.getRecipe);
+recipeRouter.get("/:recipeID/edit", recipeController.getEditRecipe);
+recipeRouter.post("/:recipeID/edit", recipeController.postEditRecipe);
 
-recipeRouter.get("/:recipeID", async (req, res) => {
-  const recipe = await recipeController.getRecipe(Number(req.params.recipeID));
-  res.render("viewRecipe", { title: recipe.name, recipe: recipe });
-});
-
-recipeRouter.get("/:recipeID/edit", async (req, res) => {
-  const recipe = await recipeController.getRecipe(req.params.recipeID);
-  res.render("editRecipe", {
-    title: recipe.name,
-    action: `/recipe/${recipe.id}/edit`,
-    recipe: recipe,
-  });
-});
-
-recipeRouter.post("/:recipeID/edit", async (req, res) => {
-  const newRecipe = recipeController.cleanUpInputRecipeData(
-    req.params.recipeID,
-    req.body.name,
-    req.body.cuisine,
-    req.body.ingredients
-  );
-
-  recipeController.updateRecipe(newRecipe);
-  res.redirect("/");
-});
-
-recipeRouter.get("/:recipeID/delete", async (req, res) => {
-  recipeController.deleteRecipe(req.params.recipeID);
-  res.redirect("/");
-});
+recipeRouter.get("/:recipeID/delete", recipeController.postDeleteRecipe);
 
 module.exports = recipeRouter;
