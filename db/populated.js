@@ -197,8 +197,8 @@ async function main() {
   console.log("seeding");
 
   await client.connect();
-  await client.query(createTablesSQL);
-  await client.query(insertValuesSQL);
+  //await client.query(createTablesSQL);
+  //await client.query(insertValuesSQL);
   await client.end();
 
   console.log("done");
