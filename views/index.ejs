@@ -17,10 +17,10 @@
   <%- include('navbar') %>
 
   <div class="card-body">
-    <% allRecipes.forEach(recipe => {%>
-    <a class="card" href=<%= "recipe/"+recipe.id %>>
-      <div class="cuisine"><%= recipe.cuisine %></div>
-      <div class="name"><%= recipe.name %></div>
+    <% allProjects.forEach(project => { %>
+    <a class="card" href="<%= "project/" + project.id %>">
+      <div class="department"><%= project.department %></div>
+      <div class="name"><%= project.name %></div>
     </a>
     <% }); %>
   </div>

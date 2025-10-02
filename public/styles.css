@@ -34,7 +34,7 @@ a:hover {
     }
 
     .home,
-    .add-recipe {
+    .add-project {
       margin-top: 7px;
     }
   }
@@ -44,7 +44,7 @@ a:hover {
   }
 }
 
-/* Index */
+/* Index / Projects List */
 .card-body {
   width: 80%;
   display: grid;
@@ -65,7 +65,7 @@ a:hover {
       background-color: #222429;
     }
 
-    .cuisine {
+    .department {
       color: lightgray;
     }
 
@@ -79,8 +79,8 @@ a:hover {
   }
 }
 
-/* View Recipe */
-.view-recipe {
+/* View Project */
+.view-project {
   padding: 10px;
 
   .name {
@@ -93,8 +93,8 @@ a:hover {
   }
 }
 
-/* Edit Recipe */
-.edit-recipe {
+/* Edit Project */
+.edit-project {
   padding: 10px;
   width: 100%;
 
@@ -109,8 +109,8 @@ a:hover {
   }
 
   .name,
-  .cuisine,
-  .ingredients {
+  .department,
+  .tasks {
     width: 40%;
     border: 1px solid grey;
     padding: 8px;

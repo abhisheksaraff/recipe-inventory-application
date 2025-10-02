@@ -1,182 +1,171 @@
 const pool = require("./pool");
 
-async function getAllRecipes() {
+async function getAllProjects() {
   const { rows } = await pool.query(`
       SELECT
-      recipes.id AS id, 
-      recipes.name AS name, 
-      cuisines.name AS cuisine 
-      FROM recipes 
-      JOIN cuisines 
-      ON recipes.cuisine_id = cuisines.id;
+      projects.id AS id, 
+      projects.name AS name, 
+      categories.name AS category 
+      FROM projects 
+      JOIN categories 
+      ON projects.category_id = categories.id;
     `);
   return rows;
 }
 
-async function getRecipe(recipeID) {
-  const recipeResult = await pool.query(`
+async function getProject(projectID) {
+  const projectResult = await pool.query(`
     SELECT
-    recipes.id AS id, 
-    recipes.name AS name, 
-    cuisines.name AS cuisine 
-    FROM recipes 
-    JOIN cuisines 
-    ON recipes.cuisine_id = cuisines.id
-    WHERE recipes.id = ${recipeID};
+    projects.id AS id, 
+    projects.name AS name, 
+    categories.name AS category 
+    FROM projects 
+    JOIN categories 
+    ON projects.category_id = categories.id
+    WHERE projects.id = ${projectID};
   `);
-  const recipe = recipeResult.rows[0];
+  const project = projectResult.rows[0];
 
-  const ingredientsResult = await pool.query(`
+  const tasksResult = await pool.query(`
     SELECT 
-    ingredients.name AS name
+    tasks.name AS name
     FROM 
-    recipe_ingredients
+    project_tasks
     JOIN 
-    ingredients 
+    tasks 
     ON 
-    recipe_ingredients.ingredient_id = ingredients.id
+    project_tasks.task_id = tasks.id
     WHERE 
-    recipe_ingredients.recipe_id = ${recipeID};
+    project_tasks.project_id = ${projectID};
   `);
 
-  // cleans up ingredients result from an array of objects to array of strings of ingredients
-  const ingredients = ingredientsResult.rows.map(
-    (ingredient) => ingredient.name
-  );
+  const tasks = tasksResult.rows.map((task) => task.name);
+  project.tasks = tasks;
 
-  recipe.ingredients = ingredients;
-
-  return recipe;
+  return project;
 }
 
-async function addRecipe(recipe) {
+async function addProject(project) {
   await pool.query(`
-   INSERT INTO recipes (name, cuisine_id) 
-   VALUES ('${recipe.name}', ${await getCuisineID(recipe.cuisine)});
+   INSERT INTO projects (name, category_id) 
+   VALUES ('${project.name}', ${await getCategoryID(project.category)});
   `);
 
-  recipe.ingredients.forEach(async (ingredient) => {
+  project.tasks.forEach(async (task) => {
     await pool.query(`
-      INSERT INTO recipe_ingredients (recipe_id, ingredient_id)
-      VALUES (${await getRecipeID(recipe)}, ${await getIngredientID(ingredient)})
+      INSERT INTO project_tasks (project_id, task_id)
+      VALUES (${await getProjectID(project)}, ${await getTaskID(task)})
     `);
   });
 }
 
-async function updateRecipe(recipe) {
+async function updateProject(project) {
   await pool.query(`
-    UPDATE recipes
-    SET name = '${recipe.name}', cuisine_id = ${await getCuisineID(
-    recipe.cuisine
+    UPDATE projects
+    SET name = '${project.name}', category_id = ${await getCategoryID(
+    project.category
   )}
-    WHERE id = ${recipe.id};
+    WHERE id = ${project.id};
   `);
 
   await pool.query(`
-    DELETE FROM recipe_ingredients
-    WHERE recipe_id = ${recipe.id};  
+    DELETE FROM project_tasks
+    WHERE project_id = ${project.id};  
   `);
 
-  recipe.ingredients.forEach(async (ingredient) => {
+  project.tasks.forEach(async (task) => {
     await pool.query(`
-      INSERT INTO recipe_ingredients (recipe_id, ingredient_id)
-      VALUES (${recipe.id}, ${await getIngredientID(ingredient)})
+      INSERT INTO project_tasks (project_id, task_id)
+      VALUES (${project.id}, ${await getTaskID(task)})
     `);
   });
 }
 
-async function getRecipeID(recipe) {
+async function getProjectID(project) {
   const { rows } = await pool.query(`
     SELECT id
-    FROM recipes
-    WHERE name = '${recipe.name}';
+    FROM projects
+    WHERE name = '${project.name}';
   `);
 
   return rows[0].id;
 }
 
-async function getIngredientID(ingredient) {
-  // Check if exists
+async function getTaskID(task) {
   const { rows } = await pool.query(`
     SELECT id
-    FROM ingredients
-    WHERE name = '${ingredient}';
+    FROM tasks
+    WHERE name = '${task}';
   `);
 
-  // if exists
   if (rows.length > 0) return rows[0].id;
-  // if doesn't exist
   else {
     await pool.query(`
-      INSERT INTO ingredients (name)
-      VALUES ('${ingredient}');
+      INSERT INTO tasks (name)
+      VALUES ('${task}');
     `);
 
     const { rows } = await pool.query(`
       SELECT id
-      FROM ingredients
-      WHERE name = '${ingredient}';
+      FROM tasks
+      WHERE name = '${task}';
     `);
 
     return rows[0].id;
   }
 }
 
-async function getCuisineID(cuisine) {
-  // Check if exists
+async function getCategoryID(category) {
   const { rows } = await pool.query(`
     SELECT id
-    FROM cuisines
-    WHERE name = '${cuisine}';
+    FROM categories
+    WHERE name = '${category}';
   `);
 
-  // if exists
   if (rows.length > 0) return rows[0].id;
-  // if doesn't exist
   else {
     await pool.query(`
-      INSERT INTO cuisines (name)
-      VALUES ('${cuisine}');
+      INSERT INTO categories (name)
+      VALUES ('${category}');
     `);
 
     const { rows } = await pool.query(`
       SELECT id
-      FROM cuisines
-      WHERE name = '${cuisine}';
+      FROM categories
+      WHERE name = '${category}';
     `);
     return rows[0].id;
   }
 }
 
-async function deleteRecipe(recipeID) {
-  // recipe when deleted remove rows from recipe ->  will automatically take care of recipe_ingredients
+async function deleteProject(projectID) {
   await pool.query(`
     DELETE 
-    FROM recipes
-    WHERE id = ${recipeID};
+    FROM projects
+    WHERE id = ${projectID};
   `);
 }
 
-async function cleanUpOrphanCuisines() {
+async function cleanUpOrphanCategories() {
   await pool.query(`
     DELETE 
-    FROM cuisines 
-    WHERE id NOT IN (SELECT recipes.cuisine_id AS id FROM recipes);
+    FROM categories 
+    WHERE id NOT IN (SELECT projects.category_id AS id FROM projects);
   `);
 }
 
-async function cleanUpOrphanIngredients() {
+async function cleanUpOrphanTasks() {
   await pool.query(`
     DELETE
-    FROM ingredients 
-    WHERE id NOT IN (SELECT recipe_ingredients.ingredient_id  FROM recipe_ingredients);
+    FROM tasks 
+    WHERE id NOT IN (SELECT project_tasks.task_id  FROM project_tasks);
   `);
 }
 
 module.exports = {
-  getAllRecipes,
-  getRecipe,
-  addRecipe,
-  updateRecipe,
-  deleteRecipe,
+  getAllProjects,
+  getProject,
+  addProject,
+  updateProject,
+  deleteProject,
 };

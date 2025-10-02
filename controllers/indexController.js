@@ -1,11 +1,11 @@
 const queries = require("../db/queries");
 
-getAllRecipes = async (req, res) => {
-  const allRecipes = await queries.getAllRecipes();
+getAllProjects = async (req, res) => {
+  const allProjects = await queries.getAllProjects();
   res.render("index", {
-    title: "Recipe Inventory Applicaiton",
-    allRecipes: allRecipes,
+    title: "Project Tracker",
+    allProjects: allProjects,
   });
 };
 
-module.exports = { getAllRecipes };
+module.exports = { getAllProjects };
