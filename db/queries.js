@@ -2,14 +2,15 @@ const pool = require("./pool");
 
 async function getAllProjects() {
   const { rows } = await pool.query(`
-      SELECT
+    SELECT
       projects.id AS id, 
       projects.name AS name, 
-      categories.name AS category 
-      FROM projects 
-      JOIN categories 
+      projects.category_id AS category_id,
+      categories.name AS category
+    FROM projects
+    JOIN categories
       ON projects.category_id = categories.id;
-    `);
+  `);
   return rows;
 }
 

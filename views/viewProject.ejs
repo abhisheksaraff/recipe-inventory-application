@@ -10,26 +10,30 @@
 
 <body>
   <%- include('navbar') %>
+
   <div class="view-project">
-    <div class="name"><%= project.name %></div>
-    <br>
-
-    <div class="department">
-      Department:
-      <div class="department"><%= project.department %></div>
-    </div>
-    <br>
-
-    <div class="tasks-container">
-      Tasks :
-      <% project.tasks.map(task => { %>
-      <div class="task"> <%= task %> </div>
-      <% }); %>
+    <div class="header">
+      <h1 class="project-name"><%= project.name %></h1>
+      <div class="project-category">
+        Category: <span><%= project.category %></span>
+      </div>
     </div>
 
-    <br>
-    <a href=<%= project.id+"/edit" %>> Edit </a>
-    <a href=<%= project.id+"/delete" %>> Delete </a>
+    <div class="tasks-section">
+      <h2>Tasks</h2>
+      <div class="tasks-container">
+        <% project.tasks.forEach(task => { %>
+        <div class="task" style=`border: 2px solid <%= project.color || '#888' %>;`>
+          <%= task %>
+        </div>
+        <% }); %>
+      </div>
+    </div>
+
+    <div class="project-actions">
+      <a class="btn-edit" href="<%= project.id + '/edit' %>">Edit</a>
+      <a class="btn-delete" href="<%= project.id + '/delete' %>">Delete</a>
+    </div>
   </div>
 </body>
 

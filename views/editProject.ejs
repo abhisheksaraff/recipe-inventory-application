@@ -1,36 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/styles.css" />
   <title><%= title %></title>
 </head>
-
 <body>
   <%- include('navbar') %>
-  <div class="edit-project">
+
+  <div class="main-content edit-project">
+    <h1>Edit Project</h1>
     <form method="POST" action="<%= action %>">
+      
+      <!-- Project Name -->
       <label>
         <div class="label-text">Project Name:</div>
-        <input class="name" name="name" type="text" value="<%= project.name %>" />
+        <input class="name" name="name" type="text" value="<%= project.name %>" required />
       </label>
-      <br />
+
+      <!-- Category -->
       <label>
-        <div class="label-text">Department:</div>
-        <input class="department" name="department" type="text" value="<%= project.department %>" />
+        <div class="label-text">Category:</div>
+        <input class="category" name="category" type="text" value="<%= project.category %>" required />
       </label>
-      <br />
+
+      <!-- Tasks -->
       <label>
         <div class="label-text">Tasks:</div>
-        <input class="tasks" name="tasks" type="text" value="<%= project.tasks.join(',') %>" />
+        <div class="tasks-list">
+          <% project.tasks.forEach((task, idx) => { %>
+            <input class="task-input" name="tasks[]" type="text" value="<%= task %>" placeholder="Task <%= idx + 1 %>" />
+          <% }); %>
+        </div>
       </label>
-      <br />
-      <input type="submit" value="Submit" />
-      <a href="<%= `/project/${project.id}` %>"><input type="button" value="Back" /></a>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <input type="submit" value="Save Changes" />
+        <a href="<%= `/project/${project.id}` %>"><input type="button" value="Back" /></a>
+      </div>
     </form>
   </div>
 </body>
-
 </html>

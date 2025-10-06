@@ -4,11 +4,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!--  The public folder acts as the base directory for all static files.
-          Any file inside public can be accessed directly by its relative path from the base URL. For example:
-          public/styles.css can be accessed as /styles.css.
-          public/images/logo.png can be accessed as /images/logo.png. 
-          -->
   <link rel="stylesheet" href="/styles.css" />
   <title><%= title %></title>
 </head>
@@ -16,13 +11,15 @@
 <body>
   <%- include('navbar') %>
 
-  <div class="card-body">
-    <% allProjects.forEach(project => { %>
-    <a class="card" href="<%= "project/" + project.id %>">
-      <div class="department"><%= project.department %></div>
-      <div class="name"><%= project.name %></div>
-    </a>
-    <% }); %>
+  <div class="main-content">
+    <div class="card-body">
+      <% allProjects.forEach(project => { %>
+      <a class="card" href="<%= "project/" + project.id %>" style="border: 3px solid <%= project.color || '#ccc' %>;">
+        <div class="department"><%= project.department %></div>
+        <div class="name"><%= project.name %></div>
+      </a>
+      <% }); %>
+    </div>
   </div>
 </body>
 
